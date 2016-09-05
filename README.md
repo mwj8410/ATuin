@@ -1,4 +1,4 @@
-# ATuin
+# ATuin [![Build Status](https://travis-ci.org/mwj8410/ATuin.svg?branch=development)](https://travis-ci.org/mwj8410/ATuin)
 
 This is an exploratory project used to establish a workable pattern for code segments from Java and Clojure to share a single simple rout based web server. The current implementation does not allow for both Java and Clojure to share the same server object, but that should be easy enough to add.
 
