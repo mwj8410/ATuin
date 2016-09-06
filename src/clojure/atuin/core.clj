@@ -1,8 +1,7 @@
 (ns atuin.core
   (:gen-class)
   (:require [atuin.modules.httprouter :as httprouter]
-            [atuin.services.datamanagement :as datamanagement]
-  )
+            [atuin.services.datamanagement :as datamanagement])
   (:import (com.sun.net.httpserver HttpExchange
                     HttpHandler)
            (java.net ServerSocket Socket SocketException)
