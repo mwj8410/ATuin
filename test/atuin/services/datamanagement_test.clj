@@ -6,6 +6,8 @@
 (require '[clojure.string :as string])
 
 (deftest activeWorld
+  (testing "Creates a new world"
+    (create-world-instance "exampleWorld"))
   (testing "Opens the Active World index file"
     (is (= (nth (get-active-world-list) 0) "exampleWorld")))
 )
@@ -25,6 +27,8 @@
 )
 
 (deftest internals
+  (testing
+    (is (= (count (generate-default-chunk)) 1024)))
   (testing "helper: allows opening a file"
     (is (= (nth (open-file
         (string/join "/" [(.getCanonicalPath (clojure.java.io/file ".")) "data"])
