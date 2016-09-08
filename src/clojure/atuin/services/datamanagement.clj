@@ -14,18 +14,44 @@
 (declare generate-default-chunk)
 (declare open-file)
 
+(declare get-active-world-list)
+
+(defn add-world-to-index
+  "Adds an entry to the current world index."
+  [worldName collectionName]
+  (spit
+    (string/join "/" [(get config :dataPath) "activeWorld.index"])
+    (conj [] ; get-active-world-list
+      [worldName collectionName (str (java.util.UUID/randomUUID))])
+    :append false))
+
 (defn create-world-instance
-  [worldName]
+  "Creates a new blank world in the configured dataPath."
+  [worldName height width]
   (let [generic-chunck (generate-default-chunk)
         container-path (string/join "/" [(get config :dataPath) worldName])
         index-file-path (string/join "/" [container-path "world.index"])
       ]
     (do
+      ; create the dir
       (.mkdir (java.io.File. container-path))
-      ; (println (str (java.util.UUID/randomUUID)))
-      (spit (string/join "/" [container-path "def.chunk"]) generic-chunck :append false)
-      (spit index-file-path [] :append false)
-  )))
+      ; create each chunk file and save the UUIDs to a tracking array that get
+      ; saved to the `world.index` file within the container directory
+      (spit index-file-path (loop [x 0 col []]
+        (if (< x height)
+          (recur (+ x 1) (conj col (loop [y 0 row []]
+            (if (< y width)
+              (let [key (str (java.util.UUID/randomUUID))]
+                ; generate the chunk file using the UUID as the file name
+                (spit
+                  (string/join "/" [container-path (string/join "." [key "chunk"])])
+                  generic-chunck :append false)
+                (recur (+ y 1) (conj row key)))
+              ; return the row data to the outer loop
+              row))))
+          ; return the completeled data structure to the index file creation
+          col))
+        :append false))))
 
 (defn get-active-world-list
   []
@@ -48,6 +74,7 @@
 
 ; helper function
 (defn generate-default-chunk
+  "Generates a default terrain data chunk"
   []
   (loop [x 0 data []]
     (if (< x 1024)

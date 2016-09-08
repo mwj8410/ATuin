@@ -6,10 +6,13 @@
 (require '[clojure.string :as string])
 
 (deftest activeWorld
+  (testing "Adds world entries"
+    (add-world-to-index "Super Awesome World" "exampleWorld"))
+
   (testing "Creates a new world"
-    (create-world-instance "exampleWorld"))
+    (create-world-instance "exampleWorld" 1 1))
   (testing "Opens the Active World index file"
-    (is (= (nth (get-active-world-list) 0) "exampleWorld")))
+    (is (not (nil? (nth (get-active-world-list) 0)))))
 )
 
 (deftest playerCharacter
