@@ -37,16 +37,16 @@
       (.mkdir (java.io.File. container-path))
       ; create each chunk file and save the UUIDs to a tracking array that get
       ; saved to the `world.index` file within the container directory
-      (spit index-file-path (loop [x 0 col []]
-        (if (< x height)
-          (recur (+ x 1) (conj col (loop [y 0 row []]
-            (if (< y width)
+      (spit index-file-path (loop [y 0 col []]
+        (if (< y height)
+          (recur (+ y 1) (conj col (loop [x 0 row []]
+            (if (< x width)
               (let [key (str (java.util.UUID/randomUUID))]
                 ; generate the chunk file using the UUID as the file name
                 (spit
                   (string/join "/" [container-path (string/join "." [key "chunk"])])
                   generic-chunck :append false)
-                (recur (+ y 1) (conj row key)))
+                (recur (+ x 1) (conj row key)))
               ; return the row data to the outer loop
               row))))
           ; return the completeled data structure to the index file creation
@@ -80,7 +80,7 @@
     (if (< x 1024)
       (recur (+ x 1) (conj data (loop [y 0 row []]
         (if (< y 1024)
-          (recur (+ y 1) (conj row [0 0 1 0]))
+          (recur (+ y 1) (conj row [0 0 1 {}]))
           row))))
       data)))
 

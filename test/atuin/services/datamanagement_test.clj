@@ -5,15 +5,16 @@
 
 (require '[clojure.string :as string])
 
-(deftest activeWorld
-  (testing "Adds world entries"
-    (add-world-to-index "Super Awesome World" "exampleWorld"))
 
-  (testing "Creates a new world"
-    (create-world-instance "exampleWorld" 1 1))
-  (testing "Opens the Active World index file"
-    (is (not (nil? (nth (get-active-world-list) 0)))))
-)
+; (deftest activeWorld
+;   (testing "Adds world entries"
+;     (add-world-to-index "Super Awesome World" "exampleWorld"))
+;
+;   (testing "Creates a new world"
+;     (create-world-instance "exampleWorld" 1 1))
+;   (testing "Opens the Active World index file"
+;     (is (not (nil? (nth (get-active-world-list) 0)))))
+; )
 
 (deftest playerCharacter
   (testing "Allows saving content as Player Character list"
